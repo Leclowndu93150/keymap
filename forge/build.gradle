@@ -7,6 +7,10 @@ architectury {
     neoForge()
 }
 
+base {
+    archivesName = archives_base_name+"-NeoForge"
+}
+
 loom {
     accessWidenerPath = project(":common").loom.accessWidenerPath
 }
