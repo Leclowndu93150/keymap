@@ -3,10 +3,7 @@ package com.github.einjerjar.mc.widgets;
 import com.github.einjerjar.mc.keymap.config.KeymapConfig;
 import com.github.einjerjar.mc.widgets.utils.*;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -181,24 +178,21 @@ public abstract class EList<T extends EList.EListEntry<T>> extends EWidget {
     }
 
     protected void renderScrollBar() {
-        Tesselator ts = Tesselator.getInstance();
-        BufferBuilder bb = ts.getBuilder();
-
         int ch = contentHeight();
         int eh = rect.h() - padding.y() * 2;
 
         if (ch == 0) return;
+
+        double scroll = (float) eh / ch;
+        if (scroll >= 1) return;
+
+        BufferBuilder bb = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
         RenderSystem.enableBlend();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
         int colScrollBg = 0x88_000000;
         int colScrollFg = 0x88_ffffff;
-
-        double scroll = (float) eh / ch;
-        if (scroll >= 1) return;
-
-        bb.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
         int scrollTop = (int) (scrollOffset * scroll);
         int scrollHeight = (int) (eh * scroll);
@@ -208,10 +202,10 @@ public abstract class EList<T extends EList.EListEntry<T>> extends EWidget {
         int actualScrollTop = padTop + scrollTop;
         int scrollBottom = actualScrollTop + scrollHeight;
 
-        WidgetUtils.drawQuad(ts, bb, scrollLeft, right(), padTop, bottom() - padding.y(), colScrollBg, false);
-        WidgetUtils.drawQuad(ts, bb, scrollLeft, right(), actualScrollTop, scrollBottom, colScrollFg, false);
+        WidgetUtils.drawQuad(bb, scrollLeft, right(), padTop, bottom() - padding.y(), colScrollBg);
+        WidgetUtils.drawQuad(bb, scrollLeft, right(), actualScrollTop, scrollBottom, colScrollFg);
 
-        ts.end();
+        BufferUploader.drawWithShader(bb.buildOrThrow());
     }
 
     protected void renderList(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {

@@ -3,32 +3,46 @@ package com.github.einjerjar.mc.keymap.mixin;
 import com.github.einjerjar.mc.keymap.client.gui.screen.KeymapScreen;
 import com.github.einjerjar.mc.keymap.client.gui.screen.LayoutSelectionScreen;
 import com.github.einjerjar.mc.keymap.config.KeymapConfig;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.Options;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.controls.ControlsScreen;
+import net.minecraft.client.gui.screens.options.MouseSettingsScreen;
+import net.minecraft.client.gui.screens.options.OptionsSubScreen;
+import net.minecraft.client.gui.screens.options.controls.ControlsScreen;
+import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.Overwrite;
 
-/**
- * Allows the mod to override the default keybinds screen
- */
 @Mixin(ControlsScreen.class)
-public class ControlsOptionsScreenMixin {
+public abstract class ControlsOptionsScreenMixin extends OptionsSubScreen {
 
-    @SuppressWarnings("UnreachableCode")
-    @Redirect(
-            method = "method_19872",
-            at =
-                    @At(
-                            value = "INVOKE",
-                            target =
-                                    "Lnet/minecraft/client/Minecraft;setScreen(Lnet/minecraft/client/gui/screens/Screen;)V"))
-    private void keymap$replaceScreen(final Minecraft instance, final Screen old) {
-        Screen scr;
-        if (KeymapConfig.instance().firstOpenDone()) scr = new KeymapScreen((ControlsScreen) (Object) this);
-        else scr = new LayoutSelectionScreen((ControlsScreen) (Object) this);
+    public ControlsOptionsScreenMixin(Screen lastScreen, Options options, Component title) {
+        super(lastScreen, options, title);
+    }
 
-        instance.setScreen(scr);
+    /**
+     * @author YourName
+     * @reason Replace keybinds screen with custom keymap screen
+     */
+    @Overwrite
+    public void addOptions() {
+        this.list.addSmall(
+                Button.builder(Component.translatable("options.mouse_settings"),
+                        (button) -> this.minecraft.setScreen(new MouseSettingsScreen(this, this.options))).build(),
+                Button.builder(Component.translatable("controls.keybinds"),
+                        (button) -> {
+                            Screen scr;
+                            if (KeymapConfig.instance().firstOpenDone()) {
+                                scr = new KeymapScreen((ControlsScreen) (Object) this);
+                            } else {
+                                scr = new LayoutSelectionScreen((ControlsScreen) (Object) this);
+                            }
+                            this.minecraft.setScreen(scr);
+                        }).build()
+        );
+        this.list.addSmall(this.options.toggleCrouch(),
+                this.options.toggleSprint(),
+                this.options.autoJump(),
+                this.options.operatorItemsTab());
     }
 }

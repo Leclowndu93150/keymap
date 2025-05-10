@@ -1,10 +1,7 @@
 package com.github.einjerjar.mc.widgets.utils;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.renderer.GameRenderer;
 
 public class WidgetUtils {
@@ -19,33 +16,30 @@ public class WidgetUtils {
     }
 
     public static void drawQuad(
-            Tesselator ts,
             BufferBuilder bb,
             int left,
             int right,
             int top,
             int bottom,
-            int color,
-            boolean initAndBuild) {
-        if (initAndBuild) {
-            RenderSystem.setShader(GameRenderer::getPositionColorShader);
-            bb.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-        }
+            int color) {
+        bb.addVertex(left, bottom, 0.0f).setColor(color);
+        bb.addVertex(right, bottom, 0.0f).setColor(color);
+        bb.addVertex(right, top, 0.0f).setColor(color);
+        bb.addVertex(left, top, 0.0f).setColor(color);
+    }
 
-        SColor lColor = new SColor(color);
-        int a = lColor.a;
-        int r = lColor.r;
-        int g = lColor.g;
-        int b = lColor.b;
+    public static void drawQuad(
+            int left,
+            int right,
+            int top,
+            int bottom,
+            int color) {
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        BufferBuilder bb = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
-        bb.vertex(left, bottom, 0.0D).color(r, g, b, a).endVertex();
-        bb.vertex(right, bottom, 0.0D).color(r, g, b, a).endVertex();
-        bb.vertex(right, top, 0.0D).color(r, g, b, a).endVertex();
-        bb.vertex(left, top, 0.0D).color(r, g, b, a).endVertex();
+        drawQuad(bb, left, right, top, bottom, color);
 
-        if (initAndBuild) {
-            ts.end();
-        }
+        BufferUploader.drawWithShader(bb.buildOrThrow());
     }
 
     public static class SColor {
