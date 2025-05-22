@@ -182,54 +182,7 @@ public abstract class EList<T extends EList.EListEntry<T>> extends EWidget {
             drawOutline(guiGraphics, 0xff_ff0000);
         }
         renderList(guiGraphics, mouseX, mouseY, partialTick);
-        renderScrollBar();
-    }
-
-
-    protected void renderScrollBar() {
-        int ch = contentHeight();
-        int eh = rect.h() - padding.y() * 2;
-
-        if (ch == 0) return;
-
-        double scroll = (float) eh / ch;
-        if (scroll >= 1) return;
-
-        int colScrollBg = 0x88_000000;
-        int colScrollFg = 0x88_ffffff;
-
-        int scrollTop = (int) (scrollOffset * scroll);
-        int scrollHeight = (int) (eh * scroll);
-
-        int scrollLeft = right() - padding.x();
-        int padTop = top() + padding.y();
-        int actualScrollTop = padTop + scrollTop;
-        int scrollBottom = actualScrollTop + scrollHeight;
-
-        BufferBuilder bb = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-
-        WidgetUtils.drawQuad(bb, scrollLeft, right(), padTop, bottom() - padding.y(), colScrollBg);
-        WidgetUtils.drawQuad(bb, scrollLeft, right(), actualScrollTop, scrollBottom, colScrollFg);
-
-        try (MeshData meshData = bb.buildOrThrow()) {
-            GpuBuffer buffer = RenderSystem.getDevice().createBuffer(
-                    () -> "scrollbar_vertices",
-                    BufferType.VERTICES,
-                    BufferUsage.STATIC_WRITE,
-                    meshData.vertexBuffer()
-            );
-
-            try (RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(
-                    Minecraft.getInstance().getMainRenderTarget().getColorTexture(),
-                    OptionalInt.empty())) {
-
-                pass.setPipeline(RenderPipelines.GUI);
-                pass.setVertexBuffer(0, buffer);
-                pass.draw(0, meshData.drawState().vertexCount());
-            }
-
-            buffer.close();
-        }
+        //renderScrollBar();
     }
 
     protected void renderList(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
