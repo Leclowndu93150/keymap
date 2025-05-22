@@ -115,7 +115,7 @@ public class VanillaKeymap implements KeyHolder {
         InputConstants.Type type = mouse ? InputConstants.Type.MOUSE : InputConstants.Type.KEYSYM;
         InputConstants.Key key = type.getOrCreate(keys.get(0));
         updateProps(key);
-        Minecraft.getInstance().options.setKey(map, key);
+        map.setKey(key);
         KeyMapping.resetMapping();
         return true;
     }
