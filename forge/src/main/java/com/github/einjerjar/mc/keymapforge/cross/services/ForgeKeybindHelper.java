@@ -7,14 +7,36 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ForgeKeybindHelper implements IKeybindHelper {
+
+    public static final List<KeyMapping> pendingKeybinds = new ArrayList<>();
 
     @Override
     public KeyMapping create(InputConstants.Type type, int code, String name, String category) {
-        KeyMapping k = new KeyMapping(name, type, code, category);
+        KeyMapping keyMapping = new KeyMapping(name, type, code, category);
 
-        Options options = Minecraft.getInstance().options;
-        options.keyMappings = ArrayUtils.add(options.keyMappings, k);
-        return k;
+        Minecraft mc = Minecraft.getInstance();
+        if (mc != null && mc.options != null) {
+            mc.options.keyMappings = ArrayUtils.add(mc.options.keyMappings, keyMapping);
+        } else {
+            pendingKeybinds.add(keyMapping);
+        }
+
+        return keyMapping;
+    }
+
+    public static void registerPendingKeybinds() {
+        if (!pendingKeybinds.isEmpty()) {
+            Minecraft mc = Minecraft.getInstance();
+            if (mc != null && mc.options != null) {
+                for (KeyMapping keyMapping : pendingKeybinds) {
+                    mc.options.keyMappings = ArrayUtils.add(mc.options.keyMappings, keyMapping);
+                }
+                pendingKeybinds.clear();
+            }
+        }
     }
 }

@@ -3,19 +3,38 @@ package com.github.einjerjar.mc.keymapforge;
 import com.github.einjerjar.mc.keymap.Keymap;
 import com.github.einjerjar.mc.keymap.client.gui.screen.ConfigScreen;
 import java.io.File;
+
+import net.minecraft.client.KeyMapping;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+
+import static com.github.einjerjar.mc.keymapforge.cross.services.ForgeKeybindHelper.pendingKeybinds;
 
 @Mod(Keymap.MOD_ID)
 public class KeymapForge {
-    public KeymapForge() {
+    public KeymapForge(IEventBus eventBus) {
         switch (FMLEnvironment.dist) {
             case CLIENT -> IDK.clientInit();
             case DEDICATED_SERVER -> IDK.serverInit();
         }
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            eventBus.addListener(this::onRegisterKeyMappings);
+        }
+    }
+
+    @SubscribeEvent
+    public void onRegisterKeyMappings(RegisterKeyMappingsEvent event) {
+        for (KeyMapping keyMapping : pendingKeybinds) {
+            event.register(keyMapping);
+        }
+        pendingKeybinds.clear();
     }
 
     public static File configDirProvider(String name) {
@@ -36,6 +55,7 @@ public class KeymapForge {
             ModLoadingContext.get()
                     .registerExtensionPoint(
                             IConfigScreenFactory.class, () -> (minecraft, parent) -> new ConfigScreen(parent));
+
         }
     }
 }
