@@ -2,8 +2,6 @@ package com.github.einjerjar.mc.widgets.utils;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import net.minecraft.client.renderer.CoreShaders;
-import net.minecraft.client.renderer.GameRenderer;
 
 public class WidgetUtils {
     private WidgetUtils() {}
@@ -28,13 +26,8 @@ public class WidgetUtils {
         bb.addVertex(right, top, 0.0f).setColor(color);
         bb.addVertex(left, top, 0.0f).setColor(color);
     }
-
-    public static void drawQuad(
-            int left,
-            int right,
-            int top,
-            int bottom,
-            int color) {
+    /*
+    public static void drawQuad(int left, int right, int top, int bottom, int color) {
         RenderSystem.setShader(CoreShaders.POSITION_COLOR);
         BufferBuilder bb = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
@@ -42,6 +35,7 @@ public class WidgetUtils {
 
         BufferUploader.drawWithShader(bb.buildOrThrow());
     }
+     */
 
     public static class SColor {
         public final int a;

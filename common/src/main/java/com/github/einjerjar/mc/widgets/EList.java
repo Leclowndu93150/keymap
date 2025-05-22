@@ -2,6 +2,12 @@ package com.github.einjerjar.mc.widgets;
 
 import com.github.einjerjar.mc.keymap.config.KeymapConfig;
 import com.github.einjerjar.mc.widgets.utils.*;
+import com.mojang.blaze3d.buffers.BufferType;
+import com.mojang.blaze3d.buffers.BufferUsage;
+import com.mojang.blaze3d.buffers.GpuBuffer;
+import com.mojang.blaze3d.systems.CommandEncoder;
+import com.mojang.blaze3d.systems.GpuDevice;
+import com.mojang.blaze3d.systems.RenderPass;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import lombok.Getter;
@@ -10,14 +16,15 @@ import lombok.experimental.Accessors;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.CoreShaders;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.OptionalInt;
 
 @Accessors(fluent = true, chain = true)
 public abstract class EList<T extends EList.EListEntry<T>> extends EWidget {
@@ -178,6 +185,7 @@ public abstract class EList<T extends EList.EListEntry<T>> extends EWidget {
         renderScrollBar();
     }
 
+
     protected void renderScrollBar() {
         int ch = contentHeight();
         int eh = rect.h() - padding.y() * 2;
@@ -186,11 +194,6 @@ public abstract class EList<T extends EList.EListEntry<T>> extends EWidget {
 
         double scroll = (float) eh / ch;
         if (scroll >= 1) return;
-
-        BufferBuilder bb = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-
-        RenderSystem.enableBlend();
-        RenderSystem.setShader(CoreShaders.POSITION_COLOR);
 
         int colScrollBg = 0x88_000000;
         int colScrollFg = 0x88_ffffff;
@@ -203,10 +206,30 @@ public abstract class EList<T extends EList.EListEntry<T>> extends EWidget {
         int actualScrollTop = padTop + scrollTop;
         int scrollBottom = actualScrollTop + scrollHeight;
 
+        BufferBuilder bb = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+
         WidgetUtils.drawQuad(bb, scrollLeft, right(), padTop, bottom() - padding.y(), colScrollBg);
         WidgetUtils.drawQuad(bb, scrollLeft, right(), actualScrollTop, scrollBottom, colScrollFg);
 
-        BufferUploader.drawWithShader(bb.buildOrThrow());
+        try (MeshData meshData = bb.buildOrThrow()) {
+            GpuBuffer buffer = RenderSystem.getDevice().createBuffer(
+                    () -> "scrollbar_vertices",
+                    BufferType.VERTICES,
+                    BufferUsage.STATIC_WRITE,
+                    meshData.vertexBuffer()
+            );
+
+            try (RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(
+                    Minecraft.getInstance().getMainRenderTarget().getColorTexture(),
+                    OptionalInt.empty())) {
+
+                pass.setPipeline(RenderPipelines.GUI);
+                pass.setVertexBuffer(0, buffer);
+                pass.draw(0, meshData.drawState().vertexCount());
+            }
+
+            buffer.close();
+        }
     }
 
     protected void renderList(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
