@@ -3,6 +3,9 @@ loaderVersion = "[2,)"
 #issueTrackerURL = ""
 license = "ISC"
 
+[[accessTransformers]]
+file = "META-INF/accesstransformer.cfg"
+
 [[mods]]
 modId = "keymap"
 version = "${version}"

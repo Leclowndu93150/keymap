@@ -27,7 +27,7 @@ public class KeymapForge {
         private IDK() {}
 
         private static void serverInit() {
-            Keymap.logger().warn(Keymap.SERVER_WARN);
+            Keymap.logger.warn(Keymap.SERVER_WARN);
         }
 
         private static void clientInit() {

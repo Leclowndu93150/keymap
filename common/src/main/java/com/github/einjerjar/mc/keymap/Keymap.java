@@ -25,7 +25,7 @@ public class Keymap {
     protected static final String MOD_NAME = "keymap";
 
     @Getter
-    protected static final Logger logger = LogManager.getLogger();
+    public static final Logger logger = LogManager.getLogger();
 
     @Getter
     protected static KeyMapping kmOpenMapper;
