@@ -1,0 +1,195 @@
+package com.leclowndu93150.keymap.client.gui.screen;
+
+import com.leclowndu93150.keymap.Keymap;
+import com.leclowndu93150.keymap.client.gui.widgets.VirtualKeyboardWidget;
+import com.leclowndu93150.keymap.config.KeymapConfig;
+import com.leclowndu93150.keymap.keys.layout.KeyLayout;
+import com.leclowndu93150.keymap.keys.sources.KeymappingNotifier;
+import com.leclowndu93150.keymap.utils.VKUtil;
+import com.leclowndu93150.mc.widgets.EButton;
+import com.leclowndu93150.mc.widgets.ELabel;
+import com.leclowndu93150.mc.widgets.EScreen;
+import com.leclowndu93150.mc.widgets.EWidget;
+import com.leclowndu93150.mc.widgets.ValueMapList;
+import com.leclowndu93150.mc.widgets.utils.Styles;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+
+import java.util.List;
+import java.util.Map;
+
+public class LayoutSelectionScreen extends EScreen {
+    protected List<VirtualKeyboardWidget> vks;
+    protected VirtualKeyboardWidget vkBasic;
+    protected VirtualKeyboardWidget vkExtra;
+    protected VirtualKeyboardWidget vkMouse;
+    protected VirtualKeyboardWidget vkNumpad;
+    protected ValueMapList listLayouts;
+    protected EButton btnSave;
+    protected EButton btnCancel;
+    protected EButton btnClose;
+    protected ELabel lblScreenLabel;
+    protected ELabel lblCreditTitle;
+    protected ELabel lblCreditName;
+
+    public LayoutSelectionScreen(Screen parent) {
+        super(parent, Component.literal("Keymap Layout"));
+    }
+
+    @Override
+    protected void onInit() {
+        try { KeyLayout.loadKeys(); } catch (Exception ignored) {}
+        KeyLayout layout = KeyLayout.getLayoutWithCode(KeymapConfig.instance().customLayout());
+        KeymappingNotifier.load();
+
+        scr = scrFromWidth(Math.min(450, width));
+        initVks(layout);
+        int spaceLeft = scr.w() - padding.x() * 3 - vkBasic.rect().w();
+
+        listLayouts = new ValueMapList(
+                font.lineHeight,
+                vkBasic.right() + padding.x(),
+                vkBasic.top(),
+                spaceLeft,
+                scr.h() - padding.y() * 4 - 16 * 2,
+                false);
+
+        for (Map.Entry<String, KeyLayout> v : KeyLayout.layouts().entrySet()) {
+            listLayouts.addItem(new ValueMapList.ValueMapEntry<>(
+                    KeyLayout.layouts().get(v.getKey()).meta().name(), v.getKey(), listLayouts));
+        }
+
+        listLayouts.onItemSelected(this::onLayoutSelected);
+        listLayouts.setItemSelectedWithValue(KeymapConfig.instance().customLayout());
+
+        btnSave = new EButton(
+                Component.translatable("keymap.btnSave"),
+                listLayouts.left(),
+                listLayouts.bottom() + padding.y(),
+                (listLayouts.rect().w() - padding.x()) / 2,
+                16);
+        btnCancel = new EButton(
+                Component.translatable("keymap.btnCancel"),
+                listLayouts.right() - btnSave.rect().w(),
+                btnSave.top(),
+                btnSave.rect().w(),
+                16);
+
+        btnSave.clickAction(this::onBtnSaveClicked);
+        btnCancel.clickAction(this::onBtnCancelClicked);
+
+        lblScreenLabel = new ELabel(
+                Component.translatable("keymap.scrLayout"), scr.left(), scr.top() + padding.y(), scr.w(), 16);
+        lblCreditTitle = new ELabel(
+                Component.translatable("keymap.lblCredits"),
+                vkNumpad.right() + padding.x(),
+                vkNumpad.top() + padding.y() * 2,
+                vkBasic.right() - vkNumpad.right() - padding.x(),
+                font.lineHeight);
+        lblCreditName = new ELabel(
+                Component.literal(qAuthor(layout)).withStyle(Styles.headerBold()),
+                lblCreditTitle.left(),
+                lblCreditTitle.bottom() + padding.y(),
+                lblCreditTitle.rect().w(),
+                font.lineHeight);
+        lblScreenLabel.center(true);
+        lblCreditTitle.center(true);
+        lblCreditName.center(true);
+
+        creditVis(layout);
+
+        btnClose = new EButton(
+                Component.translatable("keymap.btnClearSearch"),
+                listLayouts.right() - 16,
+                scr.y() + padding.y(),
+                16,
+                16);
+
+        btnClose.clickAction(this::onBtnCloseClicked);
+
+        addRenderableWidget(listLayouts);
+        addRenderableWidget(btnSave);
+        addRenderableWidget(btnCancel);
+        addRenderableWidget(lblScreenLabel);
+        addRenderableWidget(lblCreditTitle);
+        addRenderableWidget(lblCreditName);
+        addRenderableWidget(btnClose);
+    }
+
+    protected void initVks(KeyLayout layout) {
+        vks = VKUtil.genLayout(layout, scr.x() + padding.x(), scr.y() + padding.y() * 2 + 16);
+        for (VirtualKeyboardWidget vk : vks) {
+            addRenderableWidget(vk);
+        }
+
+        vkBasic = vks.get(0);
+        vkExtra = vks.get(1);
+        vkMouse = vks.get(2);
+        vkNumpad = vks.get(3);
+    }
+
+    protected void onBtnCloseClicked(EWidget source) {
+        onClose();
+    }
+
+    protected String qAuthor(KeyLayout layout) {
+        return layout.meta().author() == null ? "" : layout.meta().author();
+    }
+
+    protected void creditVis(KeyLayout layout) {
+        String qa = qAuthor(layout);
+        lblCreditTitle.visible(!qa.isBlank());
+        lblCreditName.visible(!qa.isBlank());
+        lblCreditName.text(Component.literal(qa).withStyle(Styles.headerBold()));
+    }
+
+    @SuppressWarnings("unchecked")
+    protected void onBtnSaveClicked(EWidget source) {
+        ValueMapList.ValueMapEntry<String> selected = (ValueMapList.ValueMapEntry<String>) listLayouts.itemSelected();
+        if (selected == null) {
+            Keymap.logger().error("Cant save empty value!!");
+            return;
+        }
+        KeymapConfig.instance().customLayout(selected.value());
+        KeymapConfig.save();
+        onClose();
+    }
+
+    protected void onBtnCancelClicked(EWidget source) {
+        onClose();
+    }
+
+    @SuppressWarnings("unchecked")
+    protected void onLayoutSelected(EWidget source) {
+        ValueMapList.ValueMapEntry<String> selected = (ValueMapList.ValueMapEntry<String>) listLayouts.itemSelected();
+
+        KeyLayout layout = KeyLayout.getLayoutWithCode(selected.value());
+        for (VirtualKeyboardWidget vk : vks) {
+            removeWidget(vk.destroy());
+        }
+        KeymappingNotifier.clearSubscribers();
+        initVks(layout);
+
+        creditVis(layout);
+    }
+
+    @Override
+    public void onClose() {
+        KeymappingNotifier.clearSubscribers();
+        if (KeymapConfig.instance().firstOpenDone()) {
+            super.onClose();
+        } else {
+            KeymapConfig.instance().firstOpenDone(true);
+            KeymapConfig.save();
+            Minecraft.getInstance().setScreen(new KeymapScreen(parent()));
+        }
+    }
+
+    @Override
+    protected void preRenderScreen(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+        graphics.fill(0, 0, width, height, 0x55000000);
+        if (scr != null) drawOutline(graphics, scr, 0xFFFFFFFF);
+    }
+}

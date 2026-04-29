@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "com.leclowndu93150.keymap.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "client": [
+    "ControlsOptionsScreenMixin",
+    "KeyMappingAccessor",
+    "KeyMappingInvoker"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
