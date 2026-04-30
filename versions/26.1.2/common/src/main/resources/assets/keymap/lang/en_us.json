@@ -42,6 +42,8 @@
   "keymap.btnClearSearch": "❌",
   "keymap.btnClearSearchTip": "Clear the current search input",
   "keymap.btnClearSearchTip2": "Close this screen",
+  "keymap.btnVanillaKeybinds": "⌨ Vanilla",
+  "keymap.btnVanillaKeybindsTip": "Switch to the vanilla keybindings screen",
   "keymap.inpSearchPlaceholder": "Search",
   "keymap.dummy": "",
   "keymap.dummy2": "line above is simply to allow me to quickly create lines by duplication cuz I'm that lazy, this line is here so I could still have a comma on the line above... thinking about it, doesn't the fact that I'm writing this random description here make me less lazy? :D"

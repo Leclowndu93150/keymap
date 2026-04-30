@@ -24,6 +24,7 @@ import com.leclowndu93150.mc.widgets.EWidget;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.options.controls.KeyBindsScreen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
@@ -47,6 +48,7 @@ public class KeymapScreen extends EScreen {
     protected EButton btnOpenLayouts;
     protected EButton btnOpenHelp;
     protected EButton btnOpenCredits;
+    protected EButton btnVanillaKeybinds;
     protected EInput inpSearch;
 
     protected List<VirtualKeyboardWidget> vks;
@@ -100,7 +102,8 @@ public class KeymapScreen extends EScreen {
                 (listKm.rect().w() - padding.x()) / 2,
                 16);
 
-        int vkSplit = (vkBasic.rect().w() - padding.x()) / 4;
+        int totalTopWidth = vkBasic.rect().w() - padding.x() * 4;
+        int vkSplit = totalTopWidth / 5;
         btnOpenSettings = new EButton(
                 Component.translatable("keymap.btnOpenSettings"),
                 scr.x() + padding.x(),
@@ -123,7 +126,13 @@ public class KeymapScreen extends EScreen {
                 Component.translatable("keymap.btnOpenHelp"),
                 btnOpenCredits.right() + padding.x(),
                 scr.y() + padding.y(),
-                vkBasic.right() - btnOpenCredits.right() - padding.x(),
+                vkSplit,
+                16);
+        btnVanillaKeybinds = new EButton(
+                Component.translatable("keymap.btnVanillaKeybinds"),
+                btnOpenHelp.right() + padding.x(),
+                scr.y() + padding.y(),
+                vkBasic.right() - btnOpenHelp.right() - padding.x(),
                 16);
         btnClearSearch = new EButton(
                 Component.translatable("keymap.btnClearSearch"), listKm.right() - 16, scr.y() + padding.y(), 16, 16);
@@ -136,6 +145,7 @@ public class KeymapScreen extends EScreen {
             btnOpenCredits.setTooltip(Component.translatable("keymap.btnOpenCreditsTip"));
             btnOpenHelp.setTooltip(Component.translatable("keymap.btnOpenHelpTip"));
             btnClearSearch.setTooltip(Component.translatable("keymap.btnClearSearchTip2"));
+            btnVanillaKeybinds.setTooltip(Component.translatable("keymap.btnVanillaKeybindsTip"));
         }
 
         btnReset.clickAction(this::onBtnResetClicked);
@@ -146,6 +156,7 @@ public class KeymapScreen extends EScreen {
         btnOpenCredits.clickAction(this::onBtnOpenCreditsClicked);
         btnOpenHelp.clickAction(this::onBtnOpenHelpClicked);
         btnClearSearch.clickAction(this::onBtnClearSearchClicked);
+        btnVanillaKeybinds.clickAction(this::onBtnVanillaKeybindsClicked);
 
         for (KeymapSource source : KeymapSources.sources()) {
             if (!source.canUseSource()) continue;
@@ -172,6 +183,7 @@ public class KeymapScreen extends EScreen {
         addRenderableWidget(btnOpenLayouts);
         addRenderableWidget(btnOpenCredits);
         addRenderableWidget(btnOpenHelp);
+        addRenderableWidget(btnVanillaKeybinds);
         addRenderableWidget(btnClearSearch);
         addRenderableWidget(inpSearch);
     }
@@ -199,6 +211,10 @@ public class KeymapScreen extends EScreen {
     public void onClose() {
         KeymappingNotifier.clearSubscribers();
         super.onClose();
+    }
+
+    protected void onBtnVanillaKeybindsClicked(EWidget source) {
+        if (minecraft != null) minecraft.setScreen(new KeyBindsScreen(parent(), minecraft.options));
     }
 
     protected void onBtnOpenCreditsClicked(EWidget eWidget) {

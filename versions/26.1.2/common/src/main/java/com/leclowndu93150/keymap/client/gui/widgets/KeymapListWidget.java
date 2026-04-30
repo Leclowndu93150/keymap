@@ -264,7 +264,7 @@ public class KeymapListWidget extends EList<KeymapListWidget.KeymapListEntry> {
 
         @Override
         public void renderWidget(GuiGraphicsExtractor graphics, Rect r, float a) {
-            String trimmed = font.substrByWidth(keyString, r.w() - charW()).getString();
+            String trimmed = font.plainSubstrByWidth(keyString.getString(), r.w() - charW());
             graphics.text(
                     font,
                     map.isAssigned() ? CHAR_ASSIGNED : CHAR_UNASSIGNED,

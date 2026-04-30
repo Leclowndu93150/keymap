@@ -64,7 +64,7 @@ public class VanillaKeymap implements KeyHolder {
     @Override
     public String getCategory() {
         Identifier id = map.getCategory().id();
-        return id.toLanguageKey("key.categories");
+        return id.toLanguageKey("key.category");
     }
 
     @Override

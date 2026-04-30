@@ -7,13 +7,15 @@ import java.util.List;
 
 public class VanillaCategory implements CategoryHolder {
     public static final List<String> MC_CATEGORIES = List.of(
-            "key.categories.movement",
-            "key.categories.misc",
-            "key.categories.multiplayer",
-            "key.categories.gameplay",
-            "key.categories.ui",
-            "key.categories.inventory",
-            "key.categories.creative");
+            "key.category.minecraft.movement",
+            "key.category.minecraft.misc",
+            "key.category.minecraft.multiplayer",
+            "key.category.minecraft.gameplay",
+            "key.category.minecraft.ui",
+            "key.category.minecraft.inventory",
+            "key.category.minecraft.creative",
+            "key.category.minecraft.spectator",
+            "key.category.minecraft.debug");
 
     protected final String category;
     protected final Component translatedName;

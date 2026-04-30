@@ -16,7 +16,7 @@ public class VanillaCategorySource implements CategorySource {
         List<String> categories = new ArrayList<>();
         for (KeyMapping km : Minecraft.getInstance().options.keyMappings) {
             Identifier id = km.getCategory().id();
-            String cat = id.toLanguageKey("key.categories");
+            String cat = id.toLanguageKey("key.category");
             if (!categories.contains(cat)) categories.add(cat);
         }
 

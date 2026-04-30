@@ -56,7 +56,7 @@ public class CategoryListWidget extends EList<CategoryListWidget.CategoryListEnt
 
         @Override
         public void renderWidget(GuiGraphicsExtractor graphics, Rect r, float a) {
-            String trimmed = font.substrByWidth(keyString, r.w()).getString();
+            String trimmed = font.plainSubstrByWidth(keyString.getString(), r.w());
             graphics.text(font, trimmed, r.x(), r.y(), getVariant().text());
         }
     }
