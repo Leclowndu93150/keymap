@@ -17,6 +17,17 @@ prism {
         author("Leclowndu93150")
     }
 
+    version("1.20.1") {
+        fabric {
+            loaderVersion = "0.15.11"
+            fabricApi("0.92.2+1.20.1")
+        }
+        forge {
+            loaderVersion = "47.3.0"
+            loaderVersionRange = "[47,)"
+        }
+    }
+
     version("26.1.2") {
         fabric {
             loaderVersion = "0.19.2"

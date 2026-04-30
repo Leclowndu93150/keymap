@@ -1,0 +1,25 @@
+package com.leclowndu93150.keymap.keys.sources.keymap;
+
+import com.leclowndu93150.keymap.keys.wrappers.keys.KeyHolder;
+import com.leclowndu93150.keymap.keys.wrappers.keys.VanillaKeymap;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public final class VanillaKeymapSource implements KeymapSource {
+    @Override
+    public List<KeyHolder> getKeyHolders() {
+        List<KeyHolder> keymaps = new ArrayList<>();
+        for (KeyMapping km : Minecraft.getInstance().options.keyMappings) {
+            keymaps.add(new VanillaKeymap(km));
+        }
+        return keymaps;
+    }
+
+    @Override
+    public boolean canUseSource() {
+        return true;
+    }
+}

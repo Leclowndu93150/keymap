@@ -5,6 +5,7 @@ pluginManagement {
         mavenCentral()
         maven { url = uri("https://maven.fabricmc.net/") }
         maven { url = uri("https://maven.neoforged.net/releases") }
+        maven { url = uri("https://maven.minecraftforge.net/") }
         maven { url = uri("https://repo.spongepowered.org/repository/maven-public/") }
     }
 }
@@ -17,6 +18,12 @@ plugins {
 rootProject.name = "keymap"
 
 prism {
+    version("1.20.1") {
+        common()
+        fabric()
+        forge()
+    }
+
     version("26.1.2") {
         common()
         fabric()
