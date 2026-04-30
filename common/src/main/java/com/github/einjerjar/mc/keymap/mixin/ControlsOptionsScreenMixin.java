@@ -11,7 +11,9 @@ import net.minecraft.client.gui.screens.options.OptionsSubScreen;
 import net.minecraft.client.gui.screens.options.controls.ControlsScreen;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ControlsScreen.class)
 public abstract class ControlsOptionsScreenMixin extends OptionsSubScreen {
@@ -20,17 +22,13 @@ public abstract class ControlsOptionsScreenMixin extends OptionsSubScreen {
         super(lastScreen, options, title);
     }
 
-    /**
-     * @author YourName
-     * @reason Replace keybinds screen with custom keymap screen
-     */
-    @Overwrite
-    public void addOptions() {
+    @Inject(method = "addOptions", at = @At("HEAD"), cancellable = true)
+    private void redirectKeybindsButton(CallbackInfo ci) {
         this.list.addSmall(
                 Button.builder(Component.translatable("options.mouse_settings"),
-                        (button) -> this.minecraft.setScreen(new MouseSettingsScreen(this, this.options))).build(),
+                        button -> this.minecraft.setScreen(new MouseSettingsScreen(this, this.options))).build(),
                 Button.builder(Component.translatable("controls.keybinds"),
-                        (button) -> {
+                        button -> {
                             Screen scr;
                             if (KeymapConfig.instance().firstOpenDone()) {
                                 scr = new KeymapScreen((ControlsScreen) (Object) this);
@@ -44,5 +42,6 @@ public abstract class ControlsOptionsScreenMixin extends OptionsSubScreen {
                 this.options.toggleSprint(),
                 this.options.autoJump(),
                 this.options.operatorItemsTab());
+        ci.cancel();
     }
 }
