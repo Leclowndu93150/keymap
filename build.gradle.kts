@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.leclowndu93150"
-version = "0.11.1+26.1.2"
+version = "0.11.2"
 
 prism {
     metadata {
@@ -18,13 +18,14 @@ prism {
     }
 
     version("1.20.1") {
+
         fabric {
             loaderVersion = "0.15.11"
             fabricApi("0.92.2+1.20.1")
         }
         forge {
             loaderVersion = "47.3.0"
-            loaderVersionRange = "[47,)"
+            loaderVersionRange = "[4,)"
         }
     }
 
@@ -41,6 +42,8 @@ prism {
 
     publishing {
         type = ReleaseType.STABLE
+
+        changelogFile = "changelog.md"
 
         curseforge {
             accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
