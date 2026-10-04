@@ -30,12 +30,17 @@ public class Keymap {
     public static KeyMapping getKmOpenMapper() { return kmOpenMapper; }
     public static KeyMapping kmOpenMapper() { return kmOpenMapper; }
 
+    public static void registerKeys() {
+        if (kmOpenMapper != null) return;
+        kmOpenMapper = Services.KEYBIND.create(
+                InputConstants.Type.KEYSYM, InputConstants.KEY_GRAVE, "keymap.keyOpenKeymap", "keymap.keyCat");
+    }
+
     public static void init() {
         KeymapConfig.load();
         logger.info("Keymap loaded, loader={}, dev={}", Services.PLATFORM.loader(), Services.PLATFORM.dev());
 
-        kmOpenMapper = Services.KEYBIND.create(
-                InputConstants.Type.KEYSYM, InputConstants.KEY_GRAVE, "keymap.keyOpenKeymap", "keymap.keyCat");
+        registerKeys();
 
         KeymapSources.collect();
         CategorySources.collect();

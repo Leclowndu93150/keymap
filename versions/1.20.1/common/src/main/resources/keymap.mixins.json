@@ -1,12 +1,15 @@
 {
   "required": true,
+  "minVersion": "0.8",
   "package": "com.leclowndu93150.keymap.mixin",
   "compatibilityLevel": "JAVA_17",
   "refmap": "keymap.refmap.json",
   "client": [
     "ControlsOptionsScreenMixin",
+    "KeyboardHandlerMixin",
     "KeyMappingAccessor",
-    "KeyMappingInvoker"
+    "KeyMappingInvoker",
+    "TitleScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

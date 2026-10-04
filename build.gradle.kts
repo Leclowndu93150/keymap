@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.leclowndu93150"
-version = "0.11.2"
+version = "0.11.3"
 
 prism {
     metadata {
@@ -29,6 +29,17 @@ prism {
         }
     }
 
+    version("1.21.1") {
+        fabric {
+            loaderVersion = "0.19.5"
+            fabricApi("0.116.17+1.21.1")
+        }
+        neoforge {
+            loaderVersion = "21.1.255"
+            loaderVersionRange = "[21.1,)"
+        }
+    }
+
     version("26.1.2") {
         fabric {
             loaderVersion = "0.19.2"
@@ -37,6 +48,28 @@ prism {
         neoforge {
             loaderVersion = "26.1.2.30-beta"
             loaderVersionRange = "[26.1.2,)"
+        }
+    }
+
+    version("26.2") {
+        fabric {
+            loaderVersion = "0.19.5"
+            fabricApi("0.161.0+26.2")
+        }
+        neoforge {
+            loaderVersion = "26.2.0.88"
+            loaderVersionRange = "[26.2.0,)"
+        }
+    }
+
+    version("26.3") {
+        fabric {
+            loaderVersion = "0.19.5"
+            fabricApi("0.161.0+26.3")
+        }
+        neoforge {
+            loaderVersion = "26.3.0.48-beta"
+            loaderVersionRange = "[26.3.0,)"
         }
     }
 

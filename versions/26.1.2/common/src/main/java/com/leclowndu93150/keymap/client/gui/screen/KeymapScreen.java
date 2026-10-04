@@ -323,9 +323,18 @@ public class KeymapScreen extends EScreen {
 
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+        if (bindMouseButton(event.button(), event.button())) return true;
         boolean ret = super.mouseClicked(event, doubleClick);
         onMouseClicked(event.x(), event.y(), event.button());
         return ret;
+    }
+
+    private boolean bindMouseButton(int button, int code) {
+        if (button == InputConstants.MOUSE_BUTTON_LEFT || button == InputConstants.MOUSE_BUTTON_RIGHT) return false;
+        if (getFocused() != listKm || listKm.itemSelected() == null) return false;
+        listKm.setKey(new KeyComboData(code, KeyType.MOUSE, false, false, false));
+        setFocused(null);
+        return true;
     }
 
     private void onVKKeyClicked(VirtualKeyboardWidget source) {

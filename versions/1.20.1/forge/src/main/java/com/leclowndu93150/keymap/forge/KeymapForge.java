@@ -17,6 +17,7 @@ public class KeymapForge {
     }
 
     private static void onRegisterKeyMappings(RegisterKeyMappingsEvent event) {
+        Keymap.registerKeys();
         ForgeKeybindHelper.PENDING.forEach(event::register);
         ForgeKeybindHelper.PENDING.clear();
     }

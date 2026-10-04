@@ -1,2 +1,9 @@
-1.20.1: backport
-26.1.2: fix error when starting game
+- Added support for Minecraft 26.2 and 26.3
+- Updated Minecraft 1.21.1 to the latest version of the mod
+- Key combinations (like Ctrl + G) work in-game again, right from game start
+- Extra mouse buttons can now be bound by pressing them while an action is selected
+- Fixed the open-keymap key not showing in controls or saving on Forge/NeoForge
+- Fixed the `<` key on the Norwegian layout showing left mouse bindings
+- Fixed middle and right mouse buttons being swapped on the Colemak and Dvorak layouts
+- Fixed the missing mod icon on 1.20.1
+- 26.3: Japanese keyboard keys (¥, ろ, 無変換, 変換, かな) now work on the virtual keyboard

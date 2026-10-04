@@ -1,0 +1,543 @@
+{
+  "meta": {
+    "name": "Dvorak English (US)",
+    "code": "en_us_dvorak"
+  },
+  "keys": {
+    "basic": [
+      {
+        "row": [
+          {
+            "code": 41,
+            "name": "ESC",
+            "width": 14,
+            "height": 0
+          },
+          {
+            "name": "F1",
+            "code": 58,
+            "width": 2
+          },
+          {
+            "name": "F2",
+            "code": 59,
+            "width": 2
+          },
+          {
+            "name": "F3",
+            "code": 60,
+            "width": 2
+          },
+          {
+            "name": "F4",
+            "code": 61,
+            "width": 2
+          },
+          {
+            "name": "F5",
+            "code": 62,
+            "width": 2
+          },
+          {
+            "name": "F6",
+            "code": 63,
+            "width": 2
+          },
+          {
+            "name": "F7",
+            "code": 64,
+            "width": 2
+          },
+          {
+            "name": "F8",
+            "code": 65,
+            "width": 2
+          },
+          {
+            "name": "F9",
+            "code": 66,
+            "width": 2
+          },
+          {
+            "name": "F10",
+            "code": 67,
+            "width": 2
+          },
+          {
+            "name": "F11",
+            "code": 68,
+            "width": 2
+          },
+          {
+            "name": "F12",
+            "code": 69,
+            "width": 2
+          }
+        ]
+      },
+      {
+        "row": [
+          {
+            "name": "`",
+            "code": 53
+          },
+          {
+            "name": "1",
+            "code": 30
+          },
+          {
+            "name": "2",
+            "code": 31
+          },
+          {
+            "name": "3",
+            "code": 32
+          },
+          {
+            "name": "4",
+            "code": 33
+          },
+          {
+            "name": "5",
+            "code": 34
+          },
+          {
+            "name": "6",
+            "code": 35
+          },
+          {
+            "name": "7",
+            "code": 36
+          },
+          {
+            "name": "8",
+            "code": 37
+          },
+          {
+            "name": "9",
+            "code": 38
+          },
+          {
+            "name": "0",
+            "code": 39
+          },
+          {
+            "name": "[",
+            "code": 45
+          },
+          {
+            "name": "]",
+            "code": 46
+          },
+          {
+            "name": "BKS",
+            "code": 42,
+            "width": 20
+          }
+        ]
+      },
+      {
+        "row": [
+          {
+            "name": "TAB",
+            "code": 43,
+            "width": 10
+          },
+          {
+            "name": "'",
+            "code": 20
+          },
+          {
+            "name": ",",
+            "code": 26
+          },
+          {
+            "name": ".",
+            "code": 8
+          },
+          {
+            "name": "P",
+            "code": 21
+          },
+          {
+            "name": "Y",
+            "code": 23
+          },
+          {
+            "name": "F",
+            "code": 28
+          },
+          {
+            "name": "G",
+            "code": 24
+          },
+          {
+            "name": "C",
+            "code": 12
+          },
+          {
+            "name": "R",
+            "code": 18
+          },
+          {
+            "name": "L",
+            "code": 19
+          },
+          {
+            "name": "/",
+            "code": 47
+          },
+          {
+            "name": "=",
+            "code": 48
+          },
+          {
+            "name": "\\",
+            "code": 49,
+            "width": 10
+          }
+        ]
+      },
+      {
+        "row": [
+          {
+            "name": "CAPS",
+            "code": 57,
+            "width": 20
+          },
+          {
+            "name": "A",
+            "code": 4
+          },
+          {
+            "name": "O",
+            "code": 22
+          },
+          {
+            "name": "E",
+            "code": 7
+          },
+          {
+            "name": "U",
+            "code": 9
+          },
+          {
+            "name": "I",
+            "code": 10
+          },
+          {
+            "name": "D",
+            "code": 11
+          },
+          {
+            "name": "H",
+            "code": 13
+          },
+          {
+            "name": "T",
+            "code": 14
+          },
+          {
+            "name": "N",
+            "code": 15
+          },
+          {
+            "name": "S",
+            "code": 51
+          },
+          {
+            "name": "-",
+            "code": 52
+          },
+          {
+            "name": "ENT",
+            "code": 40,
+            "width": 18
+          }
+        ]
+      },
+      {
+        "row": [
+          {
+            "name": "LSH",
+            "code": 225,
+            "width": 28
+          },
+          {
+            "name": ";",
+            "code": 29
+          },
+          {
+            "name": "Q",
+            "code": 27
+          },
+          {
+            "name": "J",
+            "code": 6
+          },
+          {
+            "name": "K",
+            "code": 25
+          },
+          {
+            "name": "X",
+            "code": 5
+          },
+          {
+            "name": "B",
+            "code": 17
+          },
+          {
+            "name": "M",
+            "code": 16
+          },
+          {
+            "name": "W",
+            "code": 54
+          },
+          {
+            "name": "V",
+            "code": 55
+          },
+          {
+            "name": "Z",
+            "code": 56
+          },
+          {
+            "name": "RSH",
+            "code": 229,
+            "width": 28
+          }
+        ]
+      },
+      {
+        "row": [
+          {
+            "name": "LCL",
+            "code": 224,
+            "width": 10
+          },
+          {
+            "name": "LWN",
+            "code": 227,
+            "width": 10
+          },
+          {
+            "name": "LAL",
+            "code": 226,
+            "width": 10
+          },
+          {
+            "name": "SPC",
+            "code": 44,
+            "width": 58,
+            "height": 0
+          },
+          {
+            "name": "RAL",
+            "code": 230,
+            "width": 10
+          },
+          {
+            "name": "RWN",
+            "code": 231,
+            "width": 10
+          },
+          {
+            "name": "MNU",
+            "code": 101,
+            "width": 10
+          },
+          {
+            "name": "RCL",
+            "code": 228,
+            "width": 10
+          }
+        ]
+      }
+    ],
+    "extra": [
+      {
+        "row": [
+          {
+            "name": "INS",
+            "code": 73,
+            "width": 6
+          },
+          {
+            "name": "HME",
+            "code": 74,
+            "width": 6
+          },
+          {
+            "name": "PGU",
+            "code": 75,
+            "width": 6
+          }
+        ]
+      },
+      {
+        "row": [
+          {
+            "name": "DEL",
+            "code": 76,
+            "width": 6
+          },
+          {
+            "name": "END",
+            "code": 77,
+            "width": 6
+          },
+          {
+            "name": "PGU",
+            "code": 78,
+            "width": 6
+          }
+        ]
+      },
+      {
+        "row": [
+          {
+            "name": "<",
+            "code": 80
+          },
+          {
+            "name": "^",
+            "code": 82
+          },
+          {
+            "name": "V",
+            "code": 81
+          },
+          {
+            "name": ">",
+            "code": 79
+          }
+        ]
+      }
+    ],
+    "mouse": [
+      {
+        "row": [
+          {
+            "name": "ML",
+            "code": 1001,
+            "width": 6
+          },
+          {
+            "name": "MM",
+            "code": 1002,
+            "width": 6
+          },
+          {
+            "name": "MR",
+            "code": 1003,
+            "width": 6
+          }
+        ]
+      },
+      {
+        "row": [
+          {
+            "name": "Other Mouse",
+            "code": -2,
+            "width": 54
+          }
+        ]
+      }
+    ],
+    "numpad": [
+      {
+        "row": [
+          {
+            "name": "NM",
+            "code": 83
+          },
+          {
+            "name": "/",
+            "code": 84
+          },
+          {
+            "name": "*",
+            "code": 85
+          },
+          {
+            "name": "-",
+            "code": 86
+          }
+        ]
+      },
+      {
+        "row": [
+          {
+            "name": "7",
+            "code": 95
+          },
+          {
+            "name": "8",
+            "code": 96
+          },
+          {
+            "name": "9",
+            "code": 97
+          },
+          {
+            "name": "+",
+            "code": 87,
+            "height": 18
+          }
+        ]
+      },
+      {
+        "row": [
+          {
+            "name": "4",
+            "code": 92
+          },
+          {
+            "name": "5",
+            "code": 93
+          },
+          {
+            "name": "6",
+            "code": 94
+          }
+        ]
+      },
+      {
+        "row": [
+          {
+            "name": "1",
+            "code": 89
+          },
+          {
+            "name": "2",
+            "code": 90
+          },
+          {
+            "name": "3",
+            "code": 91
+          },
+          {
+            "name": "EN",
+            "code": 88,
+            "height": 18
+          }
+        ]
+      },
+      {
+        "row": [
+          {
+            "name": "0",
+            "code": 98
+          },
+          {
+            "name": ".",
+            "code": 99,
+            "width": 18
+          }
+        ]
+      }
+    ]
+  }
+}
